@@ -8,20 +8,7 @@
     <link href="/2021/12/22/ImageTest/"/>
     <url>/2021/12/22/ImageTest/</url>
     
-    <content type="html"><![CDATA[<p><img src="/.com//PerlinNoise.png" alt="图片测试"></p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Image Test</title>
-    <link href="/2021/12/19/hello-world%20-%20%E5%89%AF%E6%9C%AC/"/>
-    <url>/2021/12/19/hello-world%20-%20%E5%89%AF%E6%9C%AC/</url>
-    
-    <content type="html"><![CDATA[<p><img src="/.com//..%5CPerlinNoise.png" alt="这是图片" title="Magic Gardens"></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="/2021/12/22/ImageTest/PerlinNoise.png" alt="图片测试"></p>]]></content>
     
     
     
