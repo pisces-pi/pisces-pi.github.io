@@ -1280,7 +1280,7 @@ a.fancybox:hover {
   text-decoration: none;
 }
 #nprogress .bar {
-  height: 3px !important;
+  height: 5px !important;
   background-color: #29d !important;
 }
 #nprogress .peg {
