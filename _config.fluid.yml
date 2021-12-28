@@ -108,7 +108,7 @@ fun_features:
   # Progress bar when loading
   progressbar:
     enable: true
-    height_px: 3
+    height_px: 5
     color: "#29d"
     # See: https://github.com/rstacruz/nprogress
     options: { showSpinner: false, trickleSpeed: 100 }
