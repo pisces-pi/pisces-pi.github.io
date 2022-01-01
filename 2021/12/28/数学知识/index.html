@@ -40,8 +40,10 @@
 <meta property="og:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/frac%7Bn%5Exsin(2kpi%7Bx%7D+frac%7Bpi%7D%7B2%7D)%7D%7Bt%7D.png">
 <meta property="og:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/f(x)+mod(-f(x),a).png">
 <meta property="og:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/Bounce.png">
+<meta property="og:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/EnableFunc.png">
+<meta property="og:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/StairFunc.png">
 <meta property="article:published_time" content="2021-12-28T14:00:00.000Z">
-<meta property="article:modified_time" content="2021-12-30T14:51:53.477Z">
+<meta property="article:modified_time" content="2022-01-01T14:14:03.040Z">
 <meta property="article:author" content="派斯-Pisces">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/SmoothStep.png">
@@ -223,7 +225,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      1.8k 字
     </span>
   
 
@@ -232,7 +234,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      15 分钟
+      16 分钟
     </span>
   
 
@@ -265,7 +267,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：2021年12月30日 晚上
+                  本文最后更新于：2022年1月1日 晚上
                 
               </p>
             
@@ -359,16 +361,20 @@
 </ul></li>
 <li>使能(Enable)函数
 <ul>
-<li><span class="math inline">\(f(x)=min(floor(\frac{abs(mod(2kx-p, 2)-1)}{1-p}), 1)\)</span></li>
+<li>图像：<img src="/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/EnableFunc.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>简版：<span class="math inline">\(f(x)=ceil(sin(k\pi{x}))\)</span></li>
+<li>k为使能切换的次数的1/2</li>
+<li>繁版：<span class="math inline">\(f(x)=min(floor(\frac{abs(mod(2kx-p, 2)-1)}{1-p}), 1)\)</span></li>
 <li>k为使能切换的次数</li>
 <li>p为1值在切换过程中所占比例</li>
 </ul></li>
 <li>阶梯函数
 <ul>
-<li>自增的离散函数：<span class="math inline">\(d(x)=x+mod(-x, \frac{1}{2n})\)</span></li>
-<li>平移自增函数：<span class="math inline">\(t(x)=(x-\frac{1}{2n})+mod(\frac{1}{2n}-x, \frac{1}{2n})\)</span></li>
-<li>自增的扫描线式函数：<span class="math inline">\(s(x)=mod(2x, \frac{1}{n})+t(x)\)</span></li>
-<li>阶梯函数：<span class="math inline">\(f(x)=min(s(x),d(x))\)</span></li>
+<li>图像：<img src="/2021/12/28/%E6%95%B0%E5%AD%A6%E7%9F%A5%E8%AF%86/StairFunc.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>自增的离散函数：<span class="math inline">\(d(x)=x+mod(-x, \frac{1}{n})\)</span></li>
+<li>平移自增函数：<span class="math inline">\(t(x)=(x-\frac{1}{n})+mod(\frac{1}{n}-x, \frac{1}{n})\)</span></li>
+<li>自增的扫描线式函数：<span class="math inline">\(s(x)=mod(2x, \frac{2}{n})+t(x)\)</span></li>
+<li>阶梯函数：<span class="math inline">\(f(x)=min(s(x),d(x))\)</span>，n表示0-1内的阶梯数；x可变为其他函数以实现任意函数的阶梯化</li>
 </ul></li>
 </ol></li>
 </ul>
