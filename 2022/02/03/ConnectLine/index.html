@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="派斯-Pisces">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="材质 透明度输入 中间箭头 采样用图   由于涉及纹理动画，贴图应保留一定的出血，且寻址方式要设为Clamp 为防止据相机较远时的采样问题，设置不使用Mipmap 采样结果：  缩放  设钳制在[0, 1]的缩放系数ScaleLevel，令UV \&#x3D; ScaleLevel以缩放UV并重新采样：  V方向偏移  缩放后为保证箭头仍位于V方向的中间，需进行偏移 缩放后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="连接线">
+<meta property="og:url" content="http://example.com/2022/02/03/ConnectLine/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="材质 透明度输入 中间箭头 采样用图   由于涉及纹理动画，贴图应保留一定的出血，且寻址方式要设为Clamp 为防止据相机较远时的采样问题，设置不使用Mipmap 采样结果：  缩放  设钳制在[0, 1]的缩放系数ScaleLevel，令UV \&#x3D; ScaleLevel以缩放UV并重新采样：  V方向偏移  缩放后为保证箭头仍位于V方向的中间，需进行偏移 缩放后">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/Arrow.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/InitSample.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/UVScale.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/VOffset.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/UOffset.gif">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/ArrowRamp.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/RampSample.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/RampRot.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/RampScale.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/RampOffset.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/ArrowRampAdd.gif">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/VGradient.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/ArrowRampAddGradient.gif">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/ColorInput.gif">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/ArrowPlane.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/BP.png">
+<meta property="og:image" content="http://example.com/2022/02/03/ConnectLine/Result.gif">
+<meta property="article:published_time" content="2022-02-03T12:11:43.000Z">
+<meta property="article:modified_time" content="2022-02-05T15:30:22.054Z">
+<meta property="article:author" content="派斯-Pisces">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/02/03/ConnectLine/Arrow.png">
+  
+  
+  <title>连接线 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":5,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="连接线">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      派斯-Pisces
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-03 20:11" pubdate>
+        2022年2月3日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      13 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">连接线</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年2月5日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <h1 id="材质">材质</h1>
+<h2 id="透明度输入">透明度输入</h2>
+<h3 id="中间箭头">中间箭头</h3>
+<h4 id="采样用图">采样用图</h4>
+<ul>
+<li><img src="/2022/02/03/ConnectLine/Arrow.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>由于涉及纹理动画，贴图应保留一定的出血，且寻址方式要设为Clamp</li>
+<li>为防止据相机较远时的采样问题，设置不使用Mipmap</li>
+<li>采样结果：<img src="/2022/02/03/ConnectLine/InitSample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="缩放">缩放</h4>
+<ul>
+<li>设钳制在[0, 1]的缩放系数<strong>ScaleLevel</strong>，令<code>UV \= ScaleLevel</code>以缩放UV并重新采样：<img src="/2022/02/03/ConnectLine/UVScale.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="v方向偏移">V方向偏移</h4>
+<ul>
+<li>缩放后为保证箭头仍位于V方向的中间，需进行偏移</li>
+<li>缩放后UV在V方向的最大值为<code>VMax = 1.0 / ScaleLevel</code>，则应该将箭头向下移动<code>VMax / 2 - 0.5</code>个单位，即V方向的偏移量为<code>VOffset = -(VMax / 2 - 0.5)</code>：<img src="/2022/02/03/ConnectLine/VOffset.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="u方向偏移">U方向偏移</h4>
+<ul>
+<li>为表示连接线的指向性，需要使箭头在U方向进行纹理动画</li>
+<li>缩放后UV在U方向的最大值为<code>UMax = 1.0 / ScaleLevel</code>，则U方向箭头的移动范围为<code>[-1, UMax]</code></li>
+<li>为控制箭头的移动速度，则利用<code>NormalizedTime = frac(Time * MovSpeed)</code>做循环动画</li>
+<li>综上，得到U方向的偏移量为<code>UOffset = NormalizedTime * -(UMax + 1) + 1</code></li>
+<li>偏移后的结果：<img src="/2022/02/03/ConnectLine/UOffset.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h3 id="两侧线段">两侧线段</h3>
+<h4 id="采样用图-1">采样用图</h4>
+<ul>
+<li>两侧线段使用一张Ramp图即可，方便控制：<img src="/2022/02/03/ConnectLine/ArrowRamp.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>采样结果：<img src="/2022/02/03/ConnectLine/RampSample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="旋转">旋转</h4>
+<ul>
+<li>UE中实现该效果时，习惯以X轴方向为前向，故需要将Ramp图逆时针旋转90°</li>
+<li>这里利用二维旋转矩阵对UV进行变换，即<span class="math inline">\(\dbinom{U&#39;}{V&#39;} = \begin{bmatrix} cos\alpha &amp; -sin\alpha \\ sin\alpha &amp; cos\alpha \end{bmatrix} \dbinom{U}{V}\)</span></li>
+<li>由于我们需要以UV中心旋转，所以需要先令<code>UV -= float2(0.5, 0.5)</code>使移动到中心处，然后对U和V分量分别进行点乘以完成上述的矩阵乘法操作，最后再令<code>UV += float2(0.5, 0.5)</code>移回原位</li>
+<li><strong>旋转前应进行所需的缩放和平移操作</strong>，这里先展示单独旋转的结果：<img src="/2022/02/03/ConnectLine/RampRot.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="v方向缩放">V方向缩放</h4>
+<ul>
+<li>两侧线段由宽变窄，首先通过缩放来实现该效果</li>
+<li>设线段末端宽度占比为<code>EndPercent</code>∈[0, 1]</li>
+<li>得到V方向缩放量<code>VScale = UV.x * (EndPercent - 1) + 1</code>，使得缩放由1变为EndPercent</li>
+<li>令<code>UV \= float2(1.0, VScale)</code>以缩放UV：<img src="/2022/02/03/ConnectLine/RampScale.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="v方向偏移-1">V方向偏移</h4>
+<ul>
+<li>对线段在V方向进行偏移以修正缩放的结果</li>
+<li>与箭头的偏移处理相似，由于缩放的最大值为<code>VMax = 1.0 / VScale</code>，故偏移量为<code>VOffset = -(VMax / 2 - 0.5)</code></li>
+<li>令<code>UV += float2(0, VOffset)</code>：<img src="/2022/02/03/ConnectLine/RampOffset.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h3 id="v方向透明度渐变">V方向透明度渐变</h3>
+<h4 id="箭头和两侧线段的叠加">箭头和两侧线段的叠加</h4>
+<ul>
+<li>将上述箭头和线段的结算结果做加法：<img src="/2022/02/03/ConnectLine/ArrowRampAdd.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h4 id="渐变">渐变</h4>
+<ul>
+<li>为防止连接线两端过于生硬，添加渐变效果；这里利用两个SmoothStep相减的方式来实现：<img src="/2022/02/03/ConnectLine/VGradient.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>将渐变与之前的叠加结果相乘：<img src="/2022/02/03/ConnectLine/ArrowRampAddGradient.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="颜色输入">颜色输入</h2>
+<ul>
+<li>将所需要设置的颜色乘上明度控制以及饱和度控制，作为自发光颜色即可</li>
+<li>结合之前的透明度输入得到结果：<img src="/2022/02/03/ConnectLine/ColorInput.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="顶点偏移输入">顶点偏移输入</h2>
+<ul>
+<li>连接线应为起点和终点之间的一条曲线，这里使用抛物线来表示</li>
+<li>这里应用的抛物线公式为<span class="math inline">\(f(x) = \frac{(x-a)^2-a^2}{-2b}\)</span>，其中a应设置为起终点距离的一半；b控制抛物线的弯曲程度</li>
+<li>由于连接线后续通过缩放进行延长，因此这里的a为初始Mesh的尺寸的一半，如可设为50个单位长度</li>
+<li>b可设置为<code>1.0 / BendLevel</code>，<strong>BendLevel</strong>可设为弯曲度的调整参数</li>
+<li>x可设置为每个顶点的局部坐标；最后得到的f(x)作为z分量应用在顶点偏移即可</li>
+</ul>
+<h1 id="模型">模型</h1>
+<ul>
+<li>基础模型使用一张UE中100*100单位大小的平面即可，但由于需要弯曲，因此需要在X方向上进行细分；令由于需配合材质中顶点输入的抛物线计算，将模型的轴心设为一侧的中点</li>
+<li><img src="/2022/02/03/ConnectLine/ArrowPlane.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h1 id="蓝图">蓝图</h1>
+<ul>
+<li><img src="/2022/02/03/ConnectLine/BP.png" srcset="/img/loading.gif" lazyload width="100%"></li>
+<li>其中ArrowHeight为模型的宽度，一般设为100个单位；Aspect为连接线的长宽比</li>
+</ul>
+<h1 id="最终效果">最终效果</h1>
+<p><img src="/2022/02/03/ConnectLine/Result.gif" srcset="/img/loading.gif" lazyload width="100%"></p>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/">作品集</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/23/Niagara%E5%AD%A6%E4%B9%A0/">
+                        <span class="hidden-mobile">Niagara学习</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
