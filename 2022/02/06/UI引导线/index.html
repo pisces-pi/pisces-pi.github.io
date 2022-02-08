@@ -68,7 +68,7 @@
 <meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/PreScreenAdapt.png">
 <meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ScreenAdapt.png">
 <meta property="article:published_time" content="2022-02-06T14:41:45.000Z">
-<meta property="article:modified_time" content="2022-02-08T13:06:03.338Z">
+<meta property="article:modified_time" content="2022-02-08T13:26:39.142Z">
 <meta property="article:author" content="派斯-Pisces">
 <meta property="article:tag" content="作品集">
 <meta name="twitter:card" content="summary_large_image">
@@ -384,22 +384,25 @@ append <span class="math inline">\(\Biggl(\)</span> <img src="/2022/02/06/UI%E5%
 <li>易得公式为：<span class="math inline">\(f(x) = bend * x * (1 - x)\)</span>，其中<span class="math inline">\(Bend\)</span>为弯曲程度，可定义为<strong>BendLevel</strong></li>
 <li>对之前得到的结果进行操作：<code>Bend = BendLevel * UV.y * (1.0 - UV.y)</code></li>
 <li>最后，使旋转过的<code>UV.x += Bend</code>，再按上文所述构造UV，得到：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUV.png" srcset="/img/loading.gif" lazyload width="30%"></li>
-<li>进行图案采样的结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUVSample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>进行图案采样的结果：</li>
 </ul>
+<p><img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUVSample.png" srcset="/img/loading.gif" lazyload width="30%"></p>
 <h2 id="半透明">半透明</h2>
 <ul>
 <li>引导线可添加由起点到终点的完全透明到不透明的渐变过渡效果</li>
 <li>令<code>pow(1 - UV.y, OpacityRange)</code>，其中的UV.y为上文中最终得到的<strong>V向值域为0-1间的值</strong>以得到一个渐变区域；其中<strong>OpacityRange</strong>用于控制半透明的范围：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png" srcset="/img/loading.gif" lazyload width="30%"></li>
-<li>采样结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacitySample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>采样结果：</li>
 </ul>
+<p><img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacitySample.png" srcset="/img/loading.gif" lazyload width="30%"></p>
 <h2 id="动效">动效</h2>
 <h3 id="缓出移动">缓出移动</h3>
 <ul>
 <li>引导线的第一个动效为由起点移至终点的缓出效果</li>
 <li>这里使用一个简单的缓出公式：<span class="math inline">\(f(x) = 2x - x^2\)</span>，其中x为<span class="math inline">\(0\rightarrow1\)</span>的变量，可先通过<code>frac(Time)</code>传入，即 <figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">float</span> fracTime = frac(Time);<br><span class="hljs-attribute">float</span> offsetTime = <span class="hljs-number">2</span> * fracTime - pow(fracTime, <span class="hljs-number">2</span>.<span class="hljs-number">0</span>);<br></code></pre></div></td></tr></table></figure></li>
 <li>在之前计算V方向范围时，我们利用<code>UV.y = max(UV.y + (TotalDistance - StartPosY), 0)</code>使UV在V向上平移；这里我们先令<code>TotalDistance *= offsetTime</code>，使<code>TotalDistance</code>由0变化为最终值，以实现缓出的移动效果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOut.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
-<li>最终采样结果： <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOutResult.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>最终采样结果：</li>
 </ul>
+<p><img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOutResult.gif" srcset="/img/loading.gif" lazyload width="30%"></p>
 <h3 id="消隐">消隐</h3>
 <ul>
 <li>引导线的第二个动效是令引导线逐渐消失</li>
@@ -409,8 +412,9 @@ append <span class="math inline">\(\Biggl(\)</span> <img src="/2022/02/06/UI%E5%
 <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFade.gif" srcset="/img/loading.gif" lazyload width="20%"> * <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRangeFade.gif" srcset="/img/loading.gif" lazyload width="20%">
 </center>
 <ul>
-<li>最终效果： <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFadeResult.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>最终效果：</li>
 </ul>
+<p><img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFadeResult.gif" srcset="/img/loading.gif" lazyload width="30%"></p>
 <h3 id="动效结合">动效结合</h3>
 <ul>
 <li>需要将上述的两个动效结合起来，先进行缓出，再进行消隐</li>
