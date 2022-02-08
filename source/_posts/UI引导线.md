@@ -111,12 +111,16 @@ math: true
 - 易得公式为：$f(x) = bend * x * (1 - x)$，其中$Bend$为弯曲程度，可定义为**BendLevel**
 - 对之前得到的结果进行操作：`Bend = BendLevel * UV.y * (1.0 - UV.y)`
 - 最后，使旋转过的`UV.x += Bend`，再按上文所述构造UV，得到：<img src = '/UI引导线/BendUV.png' width='30%'>
-- 进行图案采样的结果：<img src = '/UI引导线/BendUVSample.png' width='30%'>
+- 进行图案采样的结果：
+
+<img src = '/UI引导线/BendUVSample.png' width='30%'>
 
 ## 半透明
 - 引导线可添加由起点到终点的完全透明到不透明的渐变过渡效果
 - 令`pow(1 - UV.y, OpacityRange)`，其中的UV.y为上文中最终得到的**V向值域为0-1间的值**以得到一个渐变区域；其中**OpacityRange**用于控制半透明的范围：<img src = '/UI引导线/OpacityRange.png' width='30%'>
-- 采样结果：<img src = '/UI引导线/OpacitySample.png' width='30%'>
+- 采样结果：
+
+<img src = '/UI引导线/OpacitySample.png' width='30%'>
 
 ## 动效
 ### 缓出移动
@@ -128,7 +132,8 @@ math: true
   ```
 - 在之前计算V方向范围时，我们利用`UV.y = max(UV.y + (TotalDistance - StartPosY), 0)`使UV在V向上平移；这里我们先令`TotalDistance *= offsetTime`，使`TotalDistance`由0变化为最终值，以实现缓出的移动效果：<img src = '/UI引导线/EaseOut.gif' width='30%'>
 - 最终采样结果：
-  <img src = '/UI引导线/EaseOutResult.gif' width='30%'>
+
+<img src = '/UI引导线/EaseOutResult.gif' width='30%'>
 
 ### 消隐
 - 引导线的第二个动效是令引导线逐渐消失
@@ -141,7 +146,8 @@ math: true
 </center>
 
 - 最终效果：
-  <img src = '/UI引导线/OpacityFadeResult.gif' width='30%'>
+
+<img src = '/UI引导线/OpacityFadeResult.gif' width='30%'>
 
 ### 动效结合
 - 需要将上述的两个动效结合起来，先进行缓出，再进行消隐
