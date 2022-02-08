@@ -4,6 +4,10 @@ date: 2022-02-03 20:11:43
 tags: 作品集
 math: true
 ---
+- 连接线可用于场景中两个点之间的指向表示
+
+***
+
 # 材质
 ## 透明度输入
 ### 中间箭头
@@ -67,14 +71,21 @@ math: true
 - 由于连接线后续通过缩放进行延长，因此这里的a为初始Mesh的尺寸的一半，如可设为50个单位长度
 - b可设置为`1.0 / BendLevel`，**BendLevel**可设为弯曲度的调整参数
 - x可设置为每个顶点的局部坐标；最后得到的f(x)作为z分量应用在顶点偏移即可
+- 调整**BendLevel**的结果：<img src = '/ConnectLine/BendLevel.gif' width='50%'>
+
+***
 
 # 模型
 - 基础模型使用一张UE中100*100单位大小的平面即可，但由于需要弯曲，因此需要在X方向上进行细分；令由于需配合材质中顶点输入的抛物线计算，将模型的轴心设为一侧的中点
 - <img src = '/ConnectLine/ArrowPlane.png' width='30%'>
 
+***
+
 # 蓝图
 - <img src = '/ConnectLine/BP.png' width='100%'>
 - 其中ArrowHeight为模型的宽度，一般设为100个单位；Aspect为连接线的长宽比
+
+***
 
 # 最终效果
 <img src = '/ConnectLine/Result.gif' width='100%'>
