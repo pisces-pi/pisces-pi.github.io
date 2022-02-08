@@ -1,0 +1,663 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="派斯-Pisces">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="UI引导线是存在于屏幕空间的、由指定的起点指向终点的线段 其中构成的线段的图案可自由配置   材质 图案  使用一张边缘亮度高于中间的箭头图案： 图案设置为Clamp的寻址方式；且不使用Mipmap 采样结果：  旋转  定义StartPoX、StartPosY和RotateAngle三个参数。其中前两者为引导线在屏幕上的标准化坐标；后者是为使引导线由起点指向终点所需">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI引导线">
+<meta property="og:url" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="UI引导线是存在于屏幕空间的、由指定的起点指向终点的线段 其中构成的线段的图案可自由配置   材质 图案  使用一张边缘亮度高于中间的箭头图案： 图案设置为Clamp的寻址方式；且不使用Mipmap 采样结果：  旋转  定义StartPoX、StartPosY和RotateAngle三个参数。其中前两者为引导线在屏幕上的标准化坐标；后者是为使引导线由起点指向终点所需">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/GuideLinePattern.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/PatternSample.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/Rotate.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/RotateU.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/StartMask.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EndMask.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/GradientRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UFracResult.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UFracResult.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UGradientRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/RotateV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VOffset.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VFracResult.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VMask.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VFracResult.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VMask.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UGradientRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VCeil.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultU.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultU.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultUV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/InitSample.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/InitBend.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUV.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUVSample.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacitySample.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOut.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOutResult.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFade.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRangeFade.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFadeResult.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/DynResult.gif">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/PreScreenAdapt.png">
+<meta property="og:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ScreenAdapt.png">
+<meta property="article:published_time" content="2022-02-06T14:41:45.000Z">
+<meta property="article:modified_time" content="2022-02-08T13:06:03.338Z">
+<meta property="article:author" content="派斯-Pisces">
+<meta property="article:tag" content="作品集">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/GuideLinePattern.png">
+  
+  
+  <title>UI引导线 - Hexo</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/vs2015.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.8.13","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":5,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body>
+  <header style="height: 70vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="UI引导线">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      派斯-Pisces
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-02-06 22:41" pubdate>
+        2022年2月6日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      25 分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">UI引导线</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：2022年2月8日 晚上
+                
+              </p>
+            
+            <div class="markdown-body">
+              <ul>
+<li>UI引导线是存在于屏幕空间的、由指定的起点指向终点的线段</li>
+<li>其中构成的线段的图案可自由配置</li>
+</ul>
+<hr>
+<h1 id="材质">材质</h1>
+<h2 id="图案">图案</h2>
+<ul>
+<li>使用一张边缘亮度高于中间的箭头图案：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/GuideLinePattern.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>图案设置为Clamp的寻址方式；且不使用Mipmap</li>
+<li>采样结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/PatternSample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="旋转">旋转</h2>
+<ul>
+<li>定义<strong>StartPoX</strong>、<strong>StartPosY</strong>和<strong>RotateAngle</strong>三个参数。其中前两者为引导线在屏幕上的标准化坐标；后者是为使引导线由起点指向终点所需旋转的角度</li>
+<li>使用旋转矩阵对UV进行旋转，旋转中心即为<code>float2(StartPoX, StartPosY)</code>，旋转角度为<code>RotateAngle</code></li>
+<li>得到结果(绕(0.7, 0.7)旋转45°为例)：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/Rotate.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="u方向范围计算">U方向范围计算</h2>
+<ul>
+<li>旋转之后，U方向的分布为：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/RotateU.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>通常来说，引导线不应该占据整个屏幕空间，且应允许配置其宽度</li>
+<li>定义一个参数<strong>Width</strong>表示线段的宽度</li>
+<li>计算U方向的范围遮罩： <figure class="highlight pgsql"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs pgsql"><span class="hljs-type">float</span> halfWidth = Width / <span class="hljs-number">2</span>;  //宽度的一半<br><span class="hljs-type">float</span> range<span class="hljs-keyword">Start</span> = max(StartPosX - halfWidth, <span class="hljs-number">0.0</span>);  //范围起点<br><span class="hljs-type">float</span> range<span class="hljs-keyword">End</span> = max(StartPosX + halfWidth, <span class="hljs-number">0.0</span>);  //范围终点<br><span class="hljs-type">float</span> startMask = saturate(floor(UV.x / range<span class="hljs-keyword">Start</span>));  //起点遮罩<br><span class="hljs-type">float</span> endMask = saturate(floor(UV.x / range<span class="hljs-keyword">End</span>));  //终点遮罩<br><span class="hljs-keyword">return</span> startMask - endMask;<br></code></pre></div></td></tr></table></figure> 起点遮罩减去终点遮罩：</li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/StartMask.png" srcset="/img/loading.gif" lazyload width="20%"> - <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EndMask.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<ul>
+<li><p>再计算渐变区域： 先令<code>UV.x -= rangeStart(上方代码块中的临时变量)</code>，使0-1值域位于所需范围：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/GradientRange.png" srcset="/img/loading.gif" lazyload width="30%"></p>
+<p>再令<code>UV.x = frac(UV.x / Width)</code>，得到周期性的0-1范围：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UFracResult.png" srcset="/img/loading.gif" lazyload width="30%"></p>
+<p>最后将遮罩和渐变区域相乘得到所需的U方向范围：</p></li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png" srcset="/img/loading.gif" lazyload width="20%"> * <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UFracResult.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UGradientRange.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<h2 id="v方向范围计算">V方向范围计算</h2>
+<ul>
+<li>旋转之后，V方向的分布为：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/RotateV.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>设引导线的长度为<strong>TotalDistance</strong>；我们期望图案在终点处保持完整，而在起点处可以被截断，故首先在V方向上偏移，使V向上的0值位于终点处：<code>UV.y = max(UV.y + (TotalDistance - StartPosY), 0)</code>：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VOffset.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>之后根据宽度进行frac操作以实现Tilling：<code>frac(UV.y / Width)</code>：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VFracResult.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>另计算用于截断的遮罩：<code>saturate(floor((1.0 - UV.y) / max((1.0 - StartPosY), 0)))</code>：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VMask.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>最后将遮罩和之前的Tilling后的值相乘以得到所需的V向范围：</li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VFracResult.png" srcset="/img/loading.gif" lazyload width="20%"> * <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VMask.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VRange.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<h2 id="构造uv">构造UV</h2>
+<ul>
+<li>首先确定好V方向的值，为：</li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VRange.png" srcset="/img/loading.gif" lazyload width="20%"> * <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/URange.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<ul>
+<li>之后根据得到的V向的值，对其使用<code>ceil</code>操作上取整得到一个遮罩，再去乘上原来的U向的值：</li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/UGradientRange.png" srcset="/img/loading.gif" lazyload width="20%"> * <span class="math inline">\(\Biggl(\)</span> <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png" srcset="/img/loading.gif" lazyload width="20%"> <span class="math inline">\(\xrightarrow{ceil}\)</span> <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/VCeil.png" srcset="/img/loading.gif" lazyload width="20%"> <span class="math inline">\(\Biggr)\)</span> <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultU.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<ul>
+<li>最后构造出所需的UV：</li>
+</ul>
+<center>
+append <span class="math inline">\(\Biggl(\)</span> <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultU.png" srcset="/img/loading.gif" lazyload width="20%"> , <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultV.png" srcset="/img/loading.gif" lazyload width="20%"> <span class="math inline">\(\Biggr)\)</span> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ResultUV.png" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<ul>
+<li>此时采样乘上一个颜色的结果：</li>
+</ul>
+<p><img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/InitSample.png" srcset="/img/loading.gif" lazyload width="30%"></p>
+<h2 id="弯曲">弯曲</h2>
+<h3 id="获取v向的0-1范围">获取V向的0-1范围</h3>
+<ul>
+<li>使引导线弯曲以添加更加丰富的效果，这里使用一个抛物线来实现</li>
+<li>首先需要得到一个灰度范围，由终点处的0值线性插值到起点处的1值</li>
+<li>以旋转后的UV的V向作为计算输入，令<code>UV.y = max(UV.y + (TotalDistance - StartPosY), 0.0)</code>，使得0值位于线段的终点处；此时V向的值域为<span class="math inline">\([0, 1 + (TotalDistance - StartPosY)]\)</span></li>
+<li>再令<code>UV.y /= 1 + (TotalDistance - StartPosY)</code>，使V向的值位于0-1之间</li>
+<li>最后令<code>UV.y = min(UV.y / StartPosY, 1.0)</code>，使得线段起点的V向值为1</li>
+<li>得到：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/InitBend.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h3 id="利用抛物线实现弯曲">利用抛物线实现弯曲</h3>
+<ul>
+<li>由于我们需要的是线段中心的弯曲程度最大，所以需要一个以x = 0.5对称的抛物线，且在横坐标0和1处的值为0</li>
+<li>易得公式为：<span class="math inline">\(f(x) = bend * x * (1 - x)\)</span>，其中<span class="math inline">\(Bend\)</span>为弯曲程度，可定义为<strong>BendLevel</strong></li>
+<li>对之前得到的结果进行操作：<code>Bend = BendLevel * UV.y * (1.0 - UV.y)</code></li>
+<li>最后，使旋转过的<code>UV.x += Bend</code>，再按上文所述构造UV，得到：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUV.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>进行图案采样的结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/BendUVSample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="半透明">半透明</h2>
+<ul>
+<li>引导线可添加由起点到终点的完全透明到不透明的渐变过渡效果</li>
+<li>令<code>pow(1 - UV.y, OpacityRange)</code>，其中的UV.y为上文中最终得到的<strong>V向值域为0-1间的值</strong>以得到一个渐变区域；其中<strong>OpacityRange</strong>用于控制半透明的范围：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>采样结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacitySample.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="动效">动效</h2>
+<h3 id="缓出移动">缓出移动</h3>
+<ul>
+<li>引导线的第一个动效为由起点移至终点的缓出效果</li>
+<li>这里使用一个简单的缓出公式：<span class="math inline">\(f(x) = 2x - x^2\)</span>，其中x为<span class="math inline">\(0\rightarrow1\)</span>的变量，可先通过<code>frac(Time)</code>传入，即 <figure class="highlight apache"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs apache"><span class="hljs-attribute">float</span> fracTime = frac(Time);<br><span class="hljs-attribute">float</span> offsetTime = <span class="hljs-number">2</span> * fracTime - pow(fracTime, <span class="hljs-number">2</span>.<span class="hljs-number">0</span>);<br></code></pre></div></td></tr></table></figure></li>
+<li>在之前计算V方向范围时，我们利用<code>UV.y = max(UV.y + (TotalDistance - StartPosY), 0)</code>使UV在V向上平移；这里我们先令<code>TotalDistance *= offsetTime</code>，使<code>TotalDistance</code>由0变化为最终值，以实现缓出的移动效果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOut.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>最终采样结果： <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/EaseOutResult.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h3 id="消隐">消隐</h3>
+<ul>
+<li>引导线的第二个动效是令引导线逐渐消失</li>
+<li>实现只需在之前的半透明区域基础上乘上一个随时间由<span class="math inline">\(1\rightarrow0\)</span>的值(<code>1 - frac(Time)</code>)即可：</li>
+</ul>
+<center>
+<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFade.gif" srcset="/img/loading.gif" lazyload width="20%"> * <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRange.png" srcset="/img/loading.gif" lazyload width="20%"> = <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityRangeFade.gif" srcset="/img/loading.gif" lazyload width="20%">
+</center>
+<ul>
+<li>最终效果： <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/OpacityFadeResult.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h3 id="动效结合">动效结合</h3>
+<ul>
+<li>需要将上述的两个动效结合起来，先进行缓出，再进行消隐</li>
+<li>设两个变量<strong>OffsetSpeed</strong>和<strong>FadeSpeed</strong>，分别表示缓出的速度和消隐的速度</li>
+<li>进行计算： <figure class="highlight angelscript"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs angelscript"><span class="hljs-built_in">float</span> offsetTime = <span class="hljs-number">1.0</span> / OffsetSpeed;<br><span class="hljs-built_in">float</span> fadeTime = <span class="hljs-number">1.0</span> / FadeSpeed;<br><span class="hljs-built_in">float</span> totalTime = offsetTime + fadeTime;<br><span class="hljs-built_in">float</span> totalSpeed = <span class="hljs-number">1.0</span> / totalTime;<br><br><span class="hljs-built_in">float</span> offsetRatio = offsetTime / totalTime;  <span class="hljs-comment">//偏移占总时间的比例</span><br><span class="hljs-built_in">float</span> fadeRatio = fadeTime / totalTime;  <span class="hljs-comment">//消隐占总时间的比例</span><br><br><span class="hljs-built_in">float</span> fracTime = frac(Time * TotalSpeed);  <span class="hljs-comment">//最后由时间传出的值域控制在0-1</span><br><span class="hljs-built_in">float</span> time4Offset = saturate(fracTime / offsetRatio);  <span class="hljs-comment">//时间的前部分用于进行偏移</span><br><span class="hljs-built_in">float</span> time4Fade = saturate((fracTime - offsetRatio) / fadeRatio);  <span class="hljs-comment">//时间的后部分用于消隐</span><br></code></pre></div></td></tr></table></figure></li>
+<li>将上述计算得到的<strong>time4Offset</strong>和<strong>time4Fade</strong>分别应用在偏移和消隐上即可： <img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/DynResult.gif" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+<h2 id="屏幕适配">屏幕适配</h2>
+<ul>
+<li>由于UI引导线存在于屏幕空间，因此需要根据屏幕大小进行适配</li>
+<li>以16:9的屏幕长宽比为例，此时直接采样的结果：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/PreScreenAdapt.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+<li>定义一个参数Aspect，表示屏幕的长款比；首先将它作为U方向的Tilling倍数，在16:9的情况下值即为<span class="math inline">\(\frac{16}{9}\)</span></li>
+<li>对于本例来说，只需令所有的<code>StartPosX *= Aspect</code>即可：<img src="/2022/02/06/UI%E5%BC%95%E5%AF%BC%E7%BA%BF/ScreenAdapt.png" srcset="/img/loading.gif" lazyload width="30%"></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/%E4%BD%9C%E5%93%81%E9%9B%86/">作品集</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/02/03/ConnectLine/">
+                        <span class="hidden-mobile">连接线</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- MathJax -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']]
+        },
+        loader: {
+          load: ['ui/lazy']
+        },
+        options: {
+          renderActions: {
+            findScript: [10, doc => {
+              document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+                const display = !!node.type.match(/; *mode=display/);
+                const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                const text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = { node: text, delim: '', n: 0 };
+                math.end = { node: text, delim: '', n: 0 };
+                doc.math.push(math);
+              });
+            }, '', false],
+            insertedScript: [200, () => {
+              document.querySelectorAll('mjx-container').forEach(node => {
+                let target = node.parentNode;
+                if (target.nodeName.toLowerCase() === 'li') {
+                  target.parentNode.classList.add('has-jax');
+                }
+              });
+            }, '', false]
+          }
+        }
+      };
+    </script>
+
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" ></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script>
+
+
+</body>
+</html>
