@@ -3,6 +3,7 @@ title: 连接线
 date: 2022-02-03 20:11:43
 tags: 作品集
 math: true
+hide: true
 ---
 - 连接线可用于场景中两个点之间的指向表示
 
